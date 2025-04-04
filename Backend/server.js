@@ -6,7 +6,6 @@ const morgan = require("morgan");
 const connectDB = require("./config/db");
 const routes = require("./routes")
 const rateLimit = require("express-rate-limit");
-const {notFound,errorHandler} = require("./middlewares/error.middleware")
 
 dotenv.config();
 const app = express();
@@ -28,12 +27,9 @@ app.use("/api", limiter);
 
 app.use("/api",routes)
 
-app.use("/",(req,res)=>{
+app.use("/health",(req,res)=>{
     res.status(200).json({message:"healthy"})
 })
-
-app.use(notFound);
-app.use(errorHandler);
 
 const PORT = process.env.PORT || 5000
 app.listen(PORT, ()=>{
