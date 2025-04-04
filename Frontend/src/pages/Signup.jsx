@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import "../styles/Signup.css"; // Import the CSS file
+import "../styles/Signup.css";
 
 const Signup = () => {
   const [name, setName] = useState("");
@@ -8,10 +8,12 @@ const Signup = () => {
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
 
+  const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await fetch("http://localhost:5000/api/auth/register/", {
+      const response = await fetch(`${API_BASE_URL}/api/auth/register/`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -24,7 +26,7 @@ const Signup = () => {
 
       if (response.ok) {
         localStorage.setItem("token", data.token);
-        navigate("/employees");
+        navigate("/employeelist");
       } else {
         console.error("Registration failed:", data.message);
         alert(data.message || "Registration failed");
