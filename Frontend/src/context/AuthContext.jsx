@@ -1,6 +1,7 @@
 import { createContext, useContext, useState, useEffect } from "react";
 
 const AuthContext = createContext();
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
@@ -14,7 +15,7 @@ export const AuthProvider = ({ children }) => {
 
   const signup = async (name, email, password) => {
     try {
-      const response = await fetch("http://localhost:5000/api/auth/register/", {
+      const response = await fetch(`${API_BASE_URL}/api/auth/register/`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -38,7 +39,7 @@ export const AuthProvider = ({ children }) => {
 
   const login = async (email, password) => {
     try {
-      const response = await fetch("http://localhost:5000/api/auth/login/", {
+      const response = await fetch(`${API_BASE_URL}/api/auth/login/`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -62,16 +63,16 @@ export const AuthProvider = ({ children }) => {
 
   const fetchUserProfile = async (token) => {
     try {
-      const response = await fetch("http://localhost:5000/api/auth/profile", {
+      const response = await fetch(`${API_BASE_URL}/api/auth/profile`, {
         method: "GET",
         headers: {
           Authorization: `Bearer ${token}`,
         },
       });
-  
+
       const data = await response.json();
-      console.log("User profile response:", data); // Debugging log
-  
+      console.log("User profile response:", data);
+
       if (response.ok) {
         setUser(data.user);
       } else {
@@ -83,7 +84,7 @@ export const AuthProvider = ({ children }) => {
       logout();
     }
   };
-  
+
   const logout = () => {
     localStorage.removeItem("token");
     setUser(null);
